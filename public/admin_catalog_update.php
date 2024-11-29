@@ -1,3 +1,12 @@
+<?php 
+
+require 'Database.php';
+
+$id = $_GET["id"];
+
+$produk = query("SELECT * FROM produk WHERE id = $id")[0];
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,8 +56,8 @@
                 <div class="flex flex-col items-center">
                     <!-- Field Gambar -->
                     <div class="border-dashed border-2 border-gray-300 flex justify-center items-center overflow-hidden">
-                        <input type="file" id="imageUpload" class="hidden" accept="image/*" onchange="SIMAPRO.previewImage(event)">
-                        <img id="imagePreview" class="max-w-full max-h-96 object-contain" src="" alt="Preview" style="display:none;">
+                        <input type="file" id="imageUpload" class="hidden" accept="image/*" onchange="SIMAPRO_update.previewImage(event)">
+                        <img id="imagePreview" class="max-w-full max-h-96 object-contain" src="AsetFoto/Catalog/<?= $produk['gambar']?>" alt="Preview">
                     </div>
                     <!-- Tombol Upload Gambar -->
                     <button type="button" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded" onclick="document.getElementById('imageUpload').click();">
@@ -60,24 +69,24 @@
                 <div class="flex-1 space-y-4">
                     <div class="w-72">
                         <label for="kodeProduk" class="block text-sm font-medium text-gray-700">Kode Produk</label>
-                        <input type="text" id="kodeProduk" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Kode Produk">
+                        <input type="text" id="kodeProduk" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Kode Produk" value="<?= $produk["kodeproduk"]?>">
                     </div>
                     <div class="w-72">
                         <label for="namaProduk" class="block text-sm font-medium text-gray-700">Nama Produk</label>
-                        <input type="text" id="namaProduk" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Nama Produk">
+                        <input type="text" id="namaProduk" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Nama Produk" value="<?= $produk["nama"]?>">
                     </div>
                     <div class="w-72">
                         <label for="jenisProduk" class="block text-sm font-medium text-gray-700">Jenis Produk</label>
-                        <input type="text" id="jenisProduk" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Jenis Produk">
+                        <input type="text" id="jenisProduk" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Jenis Produk" value="<?= $produk["jenis"]?>">
                     </div>
                     <div class="w-72">
                         <label for="harga" class="block text-sm font-medium text-gray-700">Harga</label>
                         <div class="flex">
                             <span class="inline-flex items-center px-3 py-2 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">Rp.</span>
-                            <input type="text" id="harga" class="block w-full px-3 py-2 border border-gray-300 rounded-r-md shadow-sm" placeholder="Harga">
+                            <input type="text" id="harga" class="block w-full px-3 py-2 border border-gray-300 rounded-r-md shadow-sm" placeholder="Harga" value="<?= $produk["harga"]?>">
                         </div>
                     </div>
-                    <button type="button" class="bg-blue-500 text-white font-bold px-5 py-2 rounded-xl hover:bg-blue-600" onclick="SIMAPRO.submitForm()">Submit</button>
+                    <button type="button" class="bg-blue-500 text-white font-bold px-5 py-2 rounded-xl hover:bg-blue-600" onclick="SIMAPRO_update.submitForm()">Submit</button>
                 </div>
             </div>
         </div>

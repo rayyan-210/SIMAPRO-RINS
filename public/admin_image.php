@@ -51,7 +51,7 @@ require_once 'database.php';
    $sql = "SELECT id_promosi, gambar FROM promosi";
    $result = mysqli_query($conn, $sql);
     
-    while ($row = mysqli_fetch_assoc($result)) {
+    while ($row = mysqli_fetch_assoc($result)) :
     ?>
         <div class="flex justify-center items-center mt-16 ">
             <div class="bg-slate-100  rounded-lg p-8 max-w-xl w-full flex flex-row mx-auto items-center">
@@ -70,7 +70,7 @@ require_once 'database.php';
                     </button>
                 </div>
             </div>
-        </div><?php } ?>
+        </div><?php endwhile; ?>
 
 
     <div class="flex justify-center items-center mt-16 ">

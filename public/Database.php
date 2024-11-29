@@ -18,7 +18,7 @@ if (isset($_POST['uploadType'])) {
     if ($uploadType === 'image') {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
             $file = $_FILES['file'];
-            $uploadDir = "C:/Users/ASUS/OneDrive/Desktop/coding/HTML/SIMAPRO/public/AsetFoto/carousel/";
+            $uploadDir = "C:/xampp/htdocs/SIMAPRO/public/AsetFoto/carousel/";
             $response = [];
 
 
@@ -187,4 +187,114 @@ if (isset($_POST['aksi']) && $_POST['aksi'] == 'hapus_semua') {
     
     exit();
 }
+
+function query($query) {
+    global $conn;
+    $result = mysqli_query($conn, $query);
+    $rows = [];
+    while($row = mysqli_fetch_assoc($result)){
+        $rows[] = $row;
+    }
+    return $rows;
+}
+
+
+
+
+function hapus($id) {
+    global $conn;
+    $query = "DELETE FROM produk WHERE id = '$id'";
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
+
+
+
+// Fungsi untuk menangani upload gambar dan data produk
+function uploadProduk() {
+    global $conn;
+
+    // Pastikan ada file yang diupload
+    if (isset($_FILES['file'])) {
+        $file = $_FILES['file'];
+        $uploadDir = "./AsetFoto/Catalog/";
+        
+        // Validasi dan simpan file
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            exit(json_encode(["message" => "File upload error code: " . $file['error']]));
+        }
+    
+        if (!in_array($file['type'], ['image/jpeg', 'image/png', 'image/gif'])) {
+            exit(json_encode(["message" => "Invalid file type. Only JPG, PNG, and GIF files are allowed."]));
+        }
+    
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+    
+        $fileName = basename($file["name"]);
+        $filePath = $uploadDir . $fileName;
+        $counter = 1;
+        while (file_exists($filePath)) {
+            $filePath = $uploadDir . pathinfo($fileName, PATHINFO_FILENAME) . "_{$counter}." . pathinfo($fileName, PATHINFO_EXTENSION);
+            $counter++;
+        }
+    
+        if (move_uploaded_file($file["tmp_name"], $filePath)) {
+            $namaProduk = $_POST['namaProduk'];
+            $kodeProduk = $_POST['kodeProduk'];
+            $jenisProduk = $_POST['jenisProduk'];
+            $harga = $_POST['harga'];
+            $fileNameForDB = basename($filePath);
+    
+            $stmt = $conn->prepare("INSERT INTO produk (id, kodeproduk, nama, gambar, harga, jenis) VALUES ('', ?, ?, ?, ?, ?)");
+            if ($stmt) {
+                $stmt->bind_param("sssis", $kodeProduk, $namaProduk, $fileNameForDB, $harga, $jenisProduk); // s: string, i: integer
+                $result = $stmt->execute();
+                $stmt->close();
+    
+                echo json_encode($result ? ["success" => true, "message" => "Produk berhasil disimpan"] : ["message" => "Gagal menyimpan ke database"]);
+            } else {
+                echo json_encode(["message" => "Kesalahan pada statement database"]);
+            }
+        } else {
+            echo json_encode(["message" => "Gagal memindahkan file yang diupload"]);
+        }
+    }
+}
+
+// Panggil fungsi upload
+uploadProduk();
 ?>
+
+<?php 
+
+function deleteProductById($id)
+{
+    global $conn;
+    // Pastikan ID valid
+    $id = intval($id);
+    if ($id <= 0) {
+        return ['status' => 'error', 'message' => 'Invalid ID'];
+    }
+
+    // Query untuk menghapus produk
+    $query = "DELETE FROM produk WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id);
+
+    if ($stmt->execute()) {
+        $stmt->close();
+        $conn->close();
+        return ['status' => 'success', 'message' => 'Product deleted successfully'];
+    } else {
+        $stmt->close();
+        $conn->close();
+        return ['status' => 'error', 'message' => 'Failed to delete product'];
+    }
+}
+
+
+?>
+
+
