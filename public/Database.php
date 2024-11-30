@@ -62,37 +62,6 @@ if (isset($_POST['uploadType'])) {
 ?>
 
 <?php
-//  hapus gambar 
-if (isset($_GET['id']) && !empty($_GET['id'])) {
-    $id = $_GET["id"];
-    $uploadDir = "C:/Users/ASUS/OneDrive/Desktop/coding/HTML/SIMAPRO/public/AsetFoto/carousel/";
-
-    $stmt_select = $conn->prepare("SELECT gambar FROM promosi WHERE id_promosi = ?");
-    $stmt_select->bind_param("i", $id);
-    $stmt_select->execute();
-    $result = $stmt_select->get_result();
-
-    if ($row = $result->fetch_assoc()) {
-        $fileName = $row['gambar'];
-        $stmt_delete = $conn->prepare("DELETE FROM promosi WHERE id_promosi = ?");
-        $stmt_delete->bind_param("i", $id);
-
-        if ($stmt_delete->execute()) {
-            echo json_encode(["success" => true, "message" => "Gambar berhasil dihapus dari database. File tetap ada di server."]);
-        } else {
-            echo json_encode(["success" => false, "message" => "Gagal menghapus gambar dari database."]);
-        }
-
-        $stmt_delete->close();
-    } else {
-        echo json_encode(["success" => false, "message" => "Gambar tidak ditemukan."]);
-    }
-
-    $stmt_select->close();
-}
-?>
-
-<?php
 // excel ke database
 if (isset($_POST['uploadType'])) {
     $uploadType = $_POST['uploadType'];
@@ -263,38 +232,9 @@ function uploadProduk() {
     }
 }
 
-// Panggil fungsi upload
-uploadProduk();
 ?>
 
-<?php 
-
-function deleteProductById($id)
-{
-    global $conn;
-    // Pastikan ID valid
-    $id = intval($id);
-    if ($id <= 0) {
-        return ['status' => 'error', 'message' => 'Invalid ID'];
-    }
-
-    // Query untuk menghapus produk
-    $query = "DELETE FROM produk WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $id);
-
-    if ($stmt->execute()) {
-        $stmt->close();
-        $conn->close();
-        return ['status' => 'success', 'message' => 'Product deleted successfully'];
-    } else {
-        $stmt->close();
-        $conn->close();
-        return ['status' => 'error', 'message' => 'Failed to delete product'];
-    }
-}
 
 
-?>
 
 

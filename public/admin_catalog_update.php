@@ -1,6 +1,7 @@
-<?php 
+<?php
 
 require 'Database.php';
+
 
 $id = $_GET["id"];
 
@@ -60,13 +61,14 @@ $produk = query("SELECT * FROM produk WHERE id = $id")[0];
                         <img id="imagePreview" class="max-w-full max-h-96 object-contain" src="AsetFoto/Catalog/<?= $produk['gambar']?>" alt="Preview">
                     </div>
                     <!-- Tombol Upload Gambar -->
-                    <button type="button" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded" onclick="document.getElementById('imageUpload').click();">
+                    <button type="button" name="submit"class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded" onclick="document.getElementById('imageUpload').click();">
                         <i class="bx bx-upload"></i> Upload Gambar
                     </button>
                 </div>
 
                 <!-- Form Fields -->
                 <div class="flex-1 space-y-4">
+                        <input type="hidden" name="idProduk" value="<?= $produk["id"]; ?>">
                     <div class="w-72">
                         <label for="kodeProduk" class="block text-sm font-medium text-gray-700">Kode Produk</label>
                         <input type="text" id="kodeProduk" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Kode Produk" value="<?= $produk["kodeproduk"]?>">

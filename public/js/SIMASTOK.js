@@ -124,7 +124,7 @@ function showdel(id) {
   }).then((result) => {
     if (result.isConfirmed) {
       // Lakukan AJAX untuk menghapus data
-      fetch(`Database.php?id=${id}`, {
+      fetch(`hapusimage.php?id=${id}`, {
         method: "GET",
       })
         .then((response) => response.json())
@@ -350,7 +350,7 @@ const SIMAPRO = (() => {
     formData.append("jenisProduk", jenisProduk);
     formData.append("harga", harga);
 
-    fetch("Database.php", {
+    fetch("logikainputcatalog.php", {
       method: "POST",
       body: formData,
     })
@@ -375,6 +375,74 @@ const SIMAPRO = (() => {
   };
 })();
 
+const SIMAPRO_update = (() => {
+  // Fungsi untuk menampilkan pratinjau gambar sebelum di-upload
+  const previewImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const previewElement = document.getElementById("imagePreview");
+        previewElement.src = reader.result;
+        previewElement.style.display = "block"; // Menampilkan gambar
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Fungsi untuk submit form dan upload data ke server
+  const submitForm = () => {
+    const kodeProduk = document.getElementById("kodeProduk").value;
+    const namaProduk = document.getElementById("namaProduk").value;
+    const jenisProduk = document.getElementById("jenisProduk").value;
+    const harga = document.getElementById("harga").value;
+    const fileInput = document.getElementById("imageUpload");
+    const file = fileInput.files[0];
+    const idProduk = document.getElementById("idProduk");
+
+    if (!kodeProduk || !namaProduk || !jenisProduk || !harga) {
+      Swal.fire("Error", "Semua kolom harus diisi", "error");
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("id", idProduk);
+    formData.append("kodeProduk", kodeProduk);
+    formData.append("namaProduk", namaProduk);
+    formData.append("jenisProduk", jenisProduk);
+    formData.append("harga", harga);
+    if (file) {
+      formData.append("file", file);
+    } else {
+      formData.append("file", "null"); // Menandai bahwa gambar tidak diupdate
+    }
+
+    fetch("updateproduk.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          Swal.fire("Success", "Produk berhasil diperbarui", "success").then(() => {
+            window.location.href = "admin_catalog.php";
+          });
+        } else {
+          Swal.fire("Error", data.message, "error");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        Swal.fire("Error", "Terjadi kesalahan saat memperbarui produk", "error");
+      });
+  };
+
+  return {
+    previewImage,
+    submitForm,
+  };
+})();
+
 function hapusproduk(id) {
   Swal.fire({
     title: "HAPUS?",
@@ -388,24 +456,27 @@ function hapusproduk(id) {
     if (result.isConfirmed) {
       // Lakukan AJAX untuk menghapus data menggunakan fetch API
       fetch(`hapus_produk.php?id=${id}`, {
-        // Mengarah ke file utama
         method: "GET",
       })
-        .then((response) => response.json())
+        .then((response) => response.json()) // Konversi respons ke JSON
         .then((data) => {
           if (data.success) {
+            // Jika sukses
             Swal.fire({
-              title: "Deleted!",
-              text: "Berhasil dihapus!",
+              title: "Terhapus!",
+              text: data.message,
               icon: "success",
             }).then(() => {
-              // Setelah berhasil dihapus, hilangkan elemen produk dari halaman
+              // Hilangkan elemen produk dari halaman
               var productElement = document.getElementById("product-" + id);
               if (productElement) {
-                productElement.remove(); // Menghapus elemen produk dari DOM
+                productElement.remove();
               }
+              // Redirect jika ingin kembali ke halaman tertentu
+              window.location.href = "admin_catalog.php";
             });
           } else {
+            // Jika gagal
             Swal.fire("Gagal", data.message || "Gagal menghapus produk", "error");
           }
         })
@@ -416,63 +487,3 @@ function hapusproduk(id) {
     }
   });
 }
-
-const SIMAPRO_update = {
-  previewImage: function (event) {
-    const reader = new FileReader();
-    reader.onload = function () {
-      const output = document.getElementById("imagePreview");
-      output.src = reader.result;
-      output.style.display = "block";
-    };
-    reader.readAsDataURL(event.target.files[0]);
-  },
-
-  submitForm: function () {
-    const formData = new FormData();
-    formData.append("id", '<?= $produk["id"] ?>'); // Ambil ID produk yang ingin diperbarui
-    formData.append("kodeProduk", document.getElementById("kodeProduk").value);
-    formData.append("namaProduk", document.getElementById("namaProduk").value);
-    formData.append("jenisProduk", document.getElementById("jenisProduk").value);
-    formData.append("harga", document.getElementById("harga").value);
-    formData.append("oldImage", '<?= $produk["gambar"] ?>'); // Gambar lama
-    const imageUpload = document.getElementById("imageUpload");
-    if (imageUpload.files[0]) {
-      formData.append("imageUpload", imageUpload.files[0]); // Gambar baru jika ada
-    }
-
-    // Kirim data ke backend menggunakan AJAX
-    fetch("update_produk.php", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "success") {
-          Swal.fire({
-            title: "Sukses!",
-            text: data.message,
-            icon: "success",
-            confirmButtonText: "OK",
-          }).then(() => {
-            window.location.href = "admin_catalog.php"; // Redirect setelah sukses
-          });
-        } else {
-          Swal.fire({
-            title: "Error!",
-            text: data.message,
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: "Error!",
-          text: "Terjadi kesalahan jaringan.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      });
-  },
-};

@@ -1,26 +1,21 @@
 <?php
-// Pastikan Anda sudah menghubungkan ke database di sini
 require 'Database.php';
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+header('Content-Type: application/json'); // Set respons sebagai JSON
 
-    // Query untuk menghapus produk berdasarkan ID
-    $query = "DELETE FROM produk WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $id);
+$id = $_GET["id"];
 
-    if ($stmt->execute()) {
-        // Jika berhasil, kirimkan response JSON success
-        echo json_encode(['success' => true]);
-    } else {
-        // Jika gagal, kirimkan response JSON error
-        echo json_encode(['success' => false, 'message' => 'Gagal menghapus produk']);
-    }
-
-    $stmt->close();
-    $conn->close();
+if (hapus($id) > 0) {
+    // Jika berhasil dihapus
+    echo json_encode([
+        'success' => true,
+        'message' => 'Data berhasil dihapus!'
+    ]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'ID tidak ditemukan']);
+    // Jika gagal dihapus
+    echo json_encode([
+        'success' => false,
+        'message' => 'Data gagal dihapus!'
+    ]);
 }
 ?>

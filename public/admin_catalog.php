@@ -102,9 +102,10 @@ $produk = query("SELECT * FROM produk");
                                 onclick="window.location.href='admin_catalog_update.php?id=<?= $row['id'] ?>'">
                             <span class="mr-2">✏️</span> Edit
                         </button>
-                        <button class="flex-1 bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition duration-150 flex items-center justify-center"
-                                onclick="deleteProduct(<?= $row['id'] ?>)">
-                            <span class="mr-2">🗑️</span> Delete
+                        <button 
+                        class="flex-1 bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition duration-150 flex items-center justify-center"
+                        onclick="hapusproduk(<?= $row['id'] ?>)">
+                        <span class="mr-2">🗑️</span> Delete
                         </button>
                     </div>
                 </div>
