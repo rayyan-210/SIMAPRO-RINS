@@ -2,10 +2,16 @@
 
 require 'Database.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    updateProduk();
+    exit;
+}
 
 $id = $_GET["id"];
 
 $produk = query("SELECT * FROM produk WHERE id = $id")[0];
+
+
 
 ?>
 <!DOCTYPE html>
@@ -68,7 +74,7 @@ $produk = query("SELECT * FROM produk WHERE id = $id")[0];
 
                 <!-- Form Fields -->
                 <div class="flex-1 space-y-4">
-                        <input type="hidden" name="idProduk" value="<?= $produk["id"]; ?>">
+                        <input type="hidden" id="idProduk" value="<?= $produk["id"]; ?>">
                     <div class="w-72">
                         <label for="kodeProduk" class="block text-sm font-medium text-gray-700">Kode Produk</label>
                         <input type="text" id="kodeProduk" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" placeholder="Kode Produk" value="<?= $produk["kodeproduk"]?>">

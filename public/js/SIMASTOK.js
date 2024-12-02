@@ -124,7 +124,7 @@ function showdel(id) {
   }).then((result) => {
     if (result.isConfirmed) {
       // Lakukan AJAX untuk menghapus data
-      fetch(`hapusimage.php?id=${id}`, {
+      fetch(`admin_image_hapus.php?id=${id}`, {
         method: "GET",
       })
         .then((response) => response.json())
@@ -350,7 +350,7 @@ const SIMAPRO = (() => {
     formData.append("jenisProduk", jenisProduk);
     formData.append("harga", harga);
 
-    fetch("logikainputcatalog.php", {
+    fetch("admin_catalog_input.php", {
       method: "POST",
       body: formData,
     })
@@ -398,7 +398,7 @@ const SIMAPRO_update = (() => {
     const harga = document.getElementById("harga").value;
     const fileInput = document.getElementById("imageUpload");
     const file = fileInput.files[0];
-    const idProduk = document.getElementById("idProduk");
+    const idProduk = document.getElementById("idProduk").value;
 
     if (!kodeProduk || !namaProduk || !jenisProduk || !harga) {
       Swal.fire("Error", "Semua kolom harus diisi", "error");
@@ -417,7 +417,7 @@ const SIMAPRO_update = (() => {
       formData.append("file", "null"); // Menandai bahwa gambar tidak diupdate
     }
 
-    fetch("updateproduk.php", {
+    fetch("admin_catalog_update.php", {
       method: "POST",
       body: formData,
     })
@@ -432,7 +432,6 @@ const SIMAPRO_update = (() => {
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
         Swal.fire("Error", "Terjadi kesalahan saat memperbarui produk", "error");
       });
   };
@@ -455,7 +454,7 @@ function hapusproduk(id) {
   }).then((result) => {
     if (result.isConfirmed) {
       // Lakukan AJAX untuk menghapus data menggunakan fetch API
-      fetch(`hapus_produk.php?id=${id}`, {
+      fetch(`admin_catalog_hapus.php?id=${id}`, {
         method: "GET",
       })
         .then((response) => response.json()) // Konversi respons ke JSON
