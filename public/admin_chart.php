@@ -1,5 +1,5 @@
 <?php
-require_once 'database.php';
+require_once 'Database.php';
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +34,8 @@ require_once 'database.php';
                             class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium">Catalog</a>
                         <a href="admin_image.php"
                             class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium">Image</a>
+                        <a href="admin_history.php"
+                            class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium">History</a>
                     </div>
                 </div>
                 <div class="flex items-center">
@@ -70,21 +72,15 @@ require_once 'database.php';
     </div>
 
     <!--promosi-->
-
+    <?php
+    $result = $conn->query("SELECT saran FROM promosi WHERE id_promosi = 19");
+    $row = $result->fetch_assoc();?>
     <div>
         <div class="inline-flex bg-white border-2 border-black rounded-lg shadow-lg pr-6 ">
             <h2 class="text-lg font-bold mb-1 ml-2">Promosi</h2>
         </div>
         <div class="flex-auto size-auto bg-slate-100 rounded-lg shadow-lg p-4">
-            <p class="text-gray-700">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam quaerat voluptas nemo repellat a,
-                maiores ducimus eligendi. Exercitationem iusto assumenda repellat eveniet minima ipsa dignissimos,
-                sapiente beatae quos distinctio odio ratione enim expedita dolorum explicabo suscipit id quasi quam nisi
-                rerum porro quod possimus tempore. Accusamus dolorem ipsa dolore ea incidunt magni nemo pariatur unde
-                commodi quibusdam! Minima quos cum dicta et repudiandae iure officia ea qui consequatur beatae sapiente
-                magni aliquid maxime iusto ullam aperiam deleniti magnam, enim, est veniam repellendus, similique
-                accusantium molestias. Quisquam officiis, harum repellendus magnam quo dolore a eos earum optio velit
-                culpa explicabo qui. </p>
+        <p><?php echo htmlspecialchars($row['saran'], ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
     </div>
 </body>

@@ -29,7 +29,9 @@ $produk = query("SELECT * FROM produk");
                     <div class="flex space-x-10">
                         <a href="admin_chart.php" class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium transition duration-150">Chart</a>
                         <a href="#" class="text-white underline underline-offset-8 px-3 py-2 rounded-md text-xl font-medium" aria-current="page">Catalog</a>
-                        <a href="admin_image.php" class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium transition duration-150">Image</a>
+                        <a href="admin_image.php" class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium">Image</a>
+                        <a href="admin_history.php"
+                            class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium">History</a>
                     </div>
                 </div>
                 <div class="flex items-center">

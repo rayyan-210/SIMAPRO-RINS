@@ -24,7 +24,7 @@ $produk = query("SELECT * FROM produk WHERE id = $id")[0];
 
 <body>
     <!--navbar-->
-    <nav class="bg-red-800">
+    <nav class="bg-red-800 shadow-lg">
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex-shrink-0">
@@ -32,14 +32,16 @@ $produk = query("SELECT * FROM produk WHERE id = $id")[0];
                 </div>
                 <div class="hidden sm:block">
                     <div class="flex space-x-10">
-                        <a href="admin_chart.php" class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium">Chart</a>
+                        <a href="admin_chart.php" class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium transition duration-150">Chart</a>
                         <a href="#" class="text-white underline underline-offset-8 px-3 py-2 rounded-md text-xl font-medium" aria-current="page">Catalog</a>
                         <a href="admin_image.php" class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium">Image</a>
+                        <a href="admin_history.php"
+                            class="text-gray-300 hover:text-amber-300 px-3 py-2 rounded-md text-xl font-medium">History</a>
                     </div>
                 </div>
                 <div class="flex items-center">
                     <a href="home_customer.php">
-                        <i class='bx bxs-user-circle text-4xl px-7 text-gray-300 hover:text-amber-300'></i>
+                        <i class='bx bxs-user-circle text-4xl px-7 text-gray-300 hover:text-amber-300 transition duration-150'></i>
                     </a>
                 </div>
             </div>
