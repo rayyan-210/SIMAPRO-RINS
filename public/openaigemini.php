@@ -2,17 +2,17 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$api_key = 'AIzaSyDrXFf6moOQJ8dbZucoQGJ5sD9XZPxKfFs'; // Ganti dengan kunci API Anda
-$base_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent/balance';
+ = ''; // Ganti dengan kunci API Anda
+$base_url = '';
 
 function callGeminiAPI(string $endpoint, string $method = 'GET', array $data = []): ?array {
-    global $api_key, $base_url;
+    global , $base_url;
 
     $url = $base_url . $endpoint;
 
     $headers = [
         'Content-Type: application/json',
-        'X-GEMINI-APIKEY: ' . $api_key,
+        'X-GEMINI-APIKEY: ' . ,
     ];
 
     $curl = curl_init();

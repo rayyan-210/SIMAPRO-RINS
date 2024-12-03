@@ -22,7 +22,7 @@ foreach ($data as $item) {
 }
 
 // Kirim ke GPT
-$api_key ="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";
+
 
 $curl = curl_init();
 
@@ -32,7 +32,7 @@ curl_setopt_array($curl, [
     CURLOPT_POST => true,
     CURLOPT_HTTPHEADER => [
         "Content-Type: application/json",
-        "Authorization: Bearer $api_key",
+        "Authorization: Bearer ",
     ],
     CURLOPT_POSTFIELDS => json_encode([
         "model" => "gpt-3.5-turbo",
