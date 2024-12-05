@@ -42,7 +42,6 @@ require_once 'database.php';
     </nav>
     <!-- Table -->
     <form action="" method="post">
-    <button type="submit" name="truncate">hapus</button></form>
     <div class="flex justify-center min-h-screen bg-gray-100">
         <div class="w-full max-w-3xl p-4">
             <table class="w-full text-center border-collapse border border-gray-400 bg-gray-200">

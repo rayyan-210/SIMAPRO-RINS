@@ -73,16 +73,30 @@ require_once 'Database.php';
 
     <!--promosi-->
     <?php
-    $result = $conn->query("SELECT saran FROM promosi WHERE id_promosi = 19");
-    $row = $result->fetch_assoc();?>
-    <div>
-        <div class="inline-flex bg-white border-2 border-black rounded-lg shadow-lg pr-6 ">
+    $result = $conn->query("SELECT * FROM saran");
+    ?>
+    <div class="container mx-auto px-4 py-6">
+    <div class="inline-flex bg-white border-2 border-black rounded-lg shadow-lg pr-6 ">
             <h2 class="text-lg font-bold mb-1 ml-2">Promosi</h2>
         </div>
-        <div class="flex-auto size-auto bg-slate-100 rounded-lg shadow-lg p-4">
-        <p><?php echo htmlspecialchars($row['saran'], ENT_QUOTES, 'UTF-8'); ?></p>
+        <div class="bg-slate-100 rounded-lg shadow-lg p-4">
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "
+                <div class='p-4 mb-4 bg-white rounded-lg shadow-md border border-gray-200'>
+                    <p class='text-sm font-semibold text-gray-700'><span class='font-bold'>produk:</span> " . htmlspecialchars($row['nama']) . "</p>
+                    <p class='text-sm text-gray-600'><span class='font-bold'>Saran:</span> " . htmlspecialchars($row['saran']) . "</p>
+                    <p class='text-sm text-gray-600'><span class='font-bold'>Jumlah Terjual:</span> " . htmlspecialchars($row['jumlah_terjual']) . "</p>
+                </div>";
+                }
+            } else {
+                echo "<div class='p-4 text-gray-700 bg-white rounded-lg shadow-md'>Tidak ada promosi yang tersedia.</div>";
+            }
+            ?>
         </div>
     </div>
+
 </body>
 
 </html>

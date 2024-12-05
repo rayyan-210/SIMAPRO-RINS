@@ -1,4 +1,5 @@
 <?php
+require_once 'ai.php';
 
 $servername = "localhost";
 $username = "root";
@@ -153,6 +154,8 @@ if (isset($_POST['uploadType'])) {
                 }
 
                 fclose($handle);
+                runPromosi($conn);
+
                 echo json_encode(["status" => "success", "message" => "File berhasil dimasukkan ke dalam database."]);
             } else {
                 echo json_encode(["status" => "error", "message" => "Error membuka file."]);
@@ -238,7 +241,8 @@ if (isset($_POST['aksi']) && $_POST['aksi'] == 'simpan_ke_history') {
 
     // Mengosongkan tabel penjualan setelah menyimpan ke history
     $truncateQuery = "TRUNCATE TABLE penjualan";
-    if (mysqli_query($conn, $truncateQuery)) {
+    $truncateQuery2= "TRUNCATE TABLE saran";
+    if (mysqli_query($conn, $truncateQuery)&&mysqli_query($conn,$truncateQuery2)) {
         echo json_encode([
             'status' => 'success',
             'pesan' => 'Semua data berhasil disimpan ke history dan dihapus dari tabel penjualan.'
@@ -246,17 +250,16 @@ if (isset($_POST['aksi']) && $_POST['aksi'] == 'simpan_ke_history') {
     }
     exit();
 }
-
-
-
 ?>
 
 <?php
 // menghapus data dalam tabel penjualan dan ga di save
 if (isset($_POST['aksi']) && $_POST['aksi'] == 'hapus_semua') {
 
-    $query = "TRUNCATE TABLE penjualan";
-    if (mysqli_query($conn, $query)) {
+    $query1 = "TRUNCATE TABLE penjualan";
+    $query2 = "TRUNCATE TABLE saran";
+    
+    if (mysqli_query($conn, $query1) && mysqli_query($conn, $query2)) {
         echo json_encode([
             'status' => 'success', 
             'pesan' => 'Semua data berhasil dihapus'
@@ -267,7 +270,7 @@ if (isset($_POST['aksi']) && $_POST['aksi'] == 'hapus_semua') {
             'pesan' => 'Gagal menghapus data: ' . mysqli_error($conn)
         ]);
     }
-    exit();
+   exit();
 }
 
 function query($query) {
@@ -396,15 +399,5 @@ if ($stmt->execute()) {
     ob_start();
     echo json_encode(["success" => false, "error" => $conn->error]);
     ob_end_clean();
-}
-?>
-
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['truncate'])) {
-    // Perintah TRUNCATE
-    $truncateQuery = "TRUNCATE TABLE history";
-
-    mysqli_query($conn, $truncateQuery);
-    
 }
 ?>
